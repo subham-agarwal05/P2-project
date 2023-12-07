@@ -239,24 +239,4 @@ public class PhotoEffectService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    public ResponseEntity<byte[]> getDominantColour(MultipartFile imageFile) {
-        try {
-            Pixel[][] inputImage = processingUtils.preprocessing(imageFile);
-            String imageName = imageFile.getOriginalFilename();
-
-            // ACTUAL WORK STARTS HERE
-
-            // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
-
-            // ACTUAL WORK ENDS HERE
-
-            return processingUtils.postProcessing(modifiedImage);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }
