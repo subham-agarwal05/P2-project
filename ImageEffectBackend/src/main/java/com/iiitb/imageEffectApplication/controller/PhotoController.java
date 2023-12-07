@@ -95,11 +95,4 @@ public class PhotoController {
         return photoEffectService.applySharpenEffect(amount, imageFile);
     }
 
-    @PostMapping("/dominant-colour")
-    public ResponseEntity<byte[]> getDominantColour(
-            @RequestParam("imageFile") MultipartFile imageFile
-    ) {
-        return photoEffectService.getDominantColour(imageFile);
-    }
-
 }
