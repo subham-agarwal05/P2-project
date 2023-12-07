@@ -1,6 +1,8 @@
 package com.iiitb.imageEffectApplication.service;
 import com.iiitb.imageEffectApplication.model.LogModel;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,5 +23,9 @@ public class LoggingService {
 
     public void clearLogs() {
         return;
+    }
+
+    public List<LogModel> getLogsBetweenTimestamps(LocalDateTime startTime, LocalDateTime endTime) {
+        return new ArrayList<LogModel>();
     }
 }
