@@ -1,44 +1,79 @@
-#include <iostream>
+#include "GaussianBlur.h"
 #include <vector>
 #include "../Pixel.h"
-#include "GaussianBlur.h"
-
+#include <math.h>
 using namespace std;
 
-const int kernelSize = 3;
-const float sharpenKernel[kernelSize][kernelSize] = {
-    {1/16, 1/8, 1/16},
-    {1/8,  1/4, 1/8},
-    {1/16, 1/8, 1/16}
-};
+void applyGaussianBlur(vector<vector<Pixel>>& image, float amount) {
+    int size = amount;
+    if (amount <= 3) size = 3;
+    else if (!(static_cast<int>(amount) & 1)) size = static_cast<int>(amount) - 1;
 
-void Gaussianblur(vector<vector<Pixel>>&imageVector) {
-    int num_rows = imageVector.size();
-    int num_cols = imageVector[0].size();
+    int width = image[0].size();
+    int height = image.size();
+    vector<float> kernel;
 
-    // Create a temporary vector to store the sharpened image
-    vector<vector<Pixel>> sharpenedImage(num_rows, vector<Pixel>(num_cols));
+    // Generate the Gaussian kernel
+    for (int i = -size / 2; i <= size / 2; ++i) {
+        float value = exp(-(i * i) / (2 * pow(size / 2.0, 2))) / (sqrt(2 * M_PI) * (size / 2.0));
+        kernel.push_back(value);
+    }
 
-    for (int row = 1; row < num_rows - 1; row++) {
-        for (int col = 1; col < num_cols - 1; col++) {
-            float sumR = 0, sumG = 0, sumB = 0;
+    // Normalize the kernel
+    float sum = 0;
+    for (float value : kernel) {
+        sum += value;
+    }
+    for (float& value : kernel) {
+        value /= sum;
+    }
 
-            // Apply the convolution operation
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    sumR += imageVector[row + i][col + j].r * sharpenKernel[i + 1][j + 1];
-                    sumG += imageVector[row + i][col + j].g * sharpenKernel[i + 1][j + 1];
-                    sumB += imageVector[row + i][col + j].b * sharpenKernel[i + 1][j + 1];
-                }
+    // Apply convolution separately horizontally and vertically
+    vector<vector<Pixel>> tempImage = image; // Create a temporary image to store intermediate results
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+
+            auto r = 0;
+            auto b=0;
+            auto g=0;
+
+            for (int i = -size / 2; i <= size / 2; ++i) {
+                int x_offset = max(0, min(x + i, width - 1));
+                int y_offset = max(0, min(y + i, height - 1));
+
+                r += kernel[i + size / 2] * tempImage[y_offset][x].r;
+                g += kernel[i + size / 2] * tempImage[y_offset][x].g;
+                b += kernel[i + size / 2] * tempImage[y_offset][x].b;
             }
 
-            // Clamp values to the valid range [0, 255]
-            sharpenedImage[row][col].r = min(max(static_cast<int>(sumR), 0), 255);
-            sharpenedImage[row][col].g = min(max(static_cast<int>(sumG), 0), 255);
-            sharpenedImage[row][col].b = min(max(static_cast<int>(sumB), 0), 255);
+            image[y][x].r = r;
+            image[y][x].b=b;
+            image[y][x].g=g;
+
         }
     }
 
-    // Copy the sharpened image back to the original vector
-    imageVector = sharpenedImage;
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            // Pixel result;
+            // result.r = result.b = result.g = 0;
+            auto rcheck = 0;
+            auto bcheck=0;
+            auto gcheck=0;
+
+            for (int i = -size / 2; i <= size / 2; ++i) {
+                int y_offset = max(min(y + i, height - 1),0);
+                int x_offset = max(min(x + i, width - 1),0);
+
+                rcheck += kernel[i + size / 2] * image[y][x_offset].r;
+                gcheck += kernel[i + size / 2] * image[y][x_offset].g;
+                bcheck += kernel[i + size / 2] * image[y][x_offset].b;
+            }
+
+            image[y][x].r = rcheck;
+            image[y][x].b=bcheck;
+            image[y][x].g=gcheck;
+        }
+    }
 }

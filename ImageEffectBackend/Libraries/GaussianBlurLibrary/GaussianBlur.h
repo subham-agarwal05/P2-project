@@ -5,6 +5,6 @@
 
 using namespace std;
 
-void Gaussianblur(vector<vector<Pixel>>&imageVector);
+void applyGaussianBlur(vector<vector<Pixel>>& image, float amount);
 
 #endif
