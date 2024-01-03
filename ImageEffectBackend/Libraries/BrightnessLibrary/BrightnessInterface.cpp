@@ -27,6 +27,7 @@ JNIEXPORT jobjectArray JNICALL Java_libraryInterfaces_BrightnessInterface_applyB
             jfieldID bField = env->GetFieldID(pixelClass, "b", "I");
 
             jint rValue = env->GetIntField(pixelObj, rField);
+
             jint gValue = env->GetIntField(pixelObj, gField);
             jint bValue = env->GetIntField(pixelObj, bField);
 
@@ -56,6 +57,8 @@ JNIEXPORT jobjectArray JNICALL Java_libraryInterfaces_BrightnessInterface_applyB
     // Call the function here
     // TODO
 
+    //b(imageVector,amount);
+    applyBrightness(imageVector,amount);
 
 
 
@@ -67,15 +70,14 @@ JNIEXPORT jobjectArray JNICALL Java_libraryInterfaces_BrightnessInterface_applyB
 
 
 
-    int nrows = imageVector.size();
-    int ncols = imageVector[0].size();
-    jobjectArray resultArray = env->NewObjectArray(nrows, pixelArrayClass, nullptr);
 
-    for (jsize i = 0; i < nrows; ++i) {
+    jobjectArray resultArray = env->NewObjectArray(rows, pixelArrayClass, nullptr);
+
+    for (jsize i = 0; i < rows; ++i) {
         jsize cols = imageVector[i].size();
-        jobjectArray rowArray = env->NewObjectArray(ncols, pixelClass, nullptr);
+        jobjectArray rowArray = env->NewObjectArray(cols, pixelClass, nullptr);
 
-        for (jsize j = 0; j < ncols; ++j) {
+        for (jsize j = 0; j < cols; ++j) {
             const Pixel &pixel = imageVector[i][j];
             jobject pixelObj = env->AllocObject(pixelClass);
 

@@ -1,6 +1,9 @@
 package com.iiitb.imageEffectApplication.service;
 
+import com.iiitb.imageEffectApplication.effectImp.*;
+import com.iiitb.imageEffectApplication.exception.IllegalParameterException;
 import com.iiitb.imageEffectApplication.utils.ProcessingUtils;
+import libraryInterfaces.GaussianBlurInterface;
 import libraryInterfaces.Pixel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,7 +54,10 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            brightnessImp brightness=  new brightnessImp();
+            brightness.setParameterValue(amount);
+
+            Pixel[][] modifiedImage = brightness.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
@@ -62,6 +68,8 @@ public class PhotoEffectService {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalParameterException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -75,7 +83,9 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            contrastImp contrast= new contrastImp();
+            contrast.setParameterValue(amount);
+            Pixel[][] modifiedImage = contrast.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
@@ -86,6 +96,8 @@ public class PhotoEffectService {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalParameterException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -99,7 +111,11 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            flipImp flip=new flipImp();
+            flip.selectOptionValue("Vertical",verticalFlipValue);
+            flip.selectOptionValue("Horizontal",horizontalFlipValue);
+
+            Pixel[][] modifiedImage = flip.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
@@ -111,6 +127,8 @@ public class PhotoEffectService {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalParameterException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -123,7 +141,9 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            gaussianblurImp gaussianblur= new gaussianblurImp();
+            gaussianblur.setParameterValue(radius);
+            Pixel[][] modifiedImage = gaussianblur.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
@@ -134,6 +154,8 @@ public class PhotoEffectService {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalParameterException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -146,7 +168,8 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            grayscaleImp grayscale=new grayscaleImp();
+            Pixel[][] modifiedImage = grayscale.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
@@ -166,8 +189,8 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
-
+            invertImp invert=new invertImp();
+            Pixel[][] modifiedImage = invert.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
             // ACTUAL WORK ENDS HERE
 
             return processingUtils.postProcessing(modifiedImage);
@@ -187,7 +210,10 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            rotateImp rotate=new rotateImp();
+            rotate.setParameterValue(value);
+
+            Pixel[][] modifiedImage = rotate.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
@@ -197,6 +223,8 @@ public class PhotoEffectService {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalParameterException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -208,7 +236,9 @@ public class PhotoEffectService {
             // ACTUAL WORK STARTS HERE
 
             // TODO
-            Pixel[][] modifiedImage = inputImage; // Replace this with actual modified image
+            sepiaImp sepia=new sepiaImp();
+
+            Pixel[][] modifiedImage = sepia.apply(inputImage,imageName,loggingService); // Replace this with actual modified image
 
             // ACTUAL WORK ENDS HERE
 
