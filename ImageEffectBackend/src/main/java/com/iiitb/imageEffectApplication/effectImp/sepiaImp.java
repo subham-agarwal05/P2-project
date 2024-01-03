@@ -6,6 +6,7 @@ import libraryInterfaces.SepiaInterface;
 
 public class sepiaImp implements PhotoEffect{
     public Pixel[][] apply(Pixel[][] image, String fileName, LoggingService loggingService){
+        loggingService.addLog(fileName,"Sepia","None");
         return SepiaInterface.applySepia(image);
     }
 }

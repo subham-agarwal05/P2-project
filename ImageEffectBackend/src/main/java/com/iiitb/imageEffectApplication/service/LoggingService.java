@@ -58,6 +58,7 @@ public class LoggingService {
         File nFile = new File("logFile" + String.valueOf(fileId) + ".txt");
         file = nFile;
         fileId++;
+        logs.clear();
     }
 
     public List<LogModel> getLogsBetweenTimestamps(LocalDateTime startTime, LocalDateTime endTime) {
@@ -88,6 +89,6 @@ public class LoggingService {
                 myLogs.add(myLog);
             }
         }
-        return logs;
+        return myLogs;
     }
 }

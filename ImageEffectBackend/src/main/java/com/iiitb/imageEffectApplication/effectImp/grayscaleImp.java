@@ -6,6 +6,7 @@ import libraryInterfaces.Pixel;
 
 public class grayscaleImp implements PhotoEffect{
     public     Pixel[][] apply(Pixel[][] image, String fileName, LoggingService loggingService){
+        loggingService.addLog(fileName,"Grayscale","None");
         return GrayscaleInterface.applyGrayscale(image);
     }
 }

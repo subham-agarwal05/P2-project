@@ -8,6 +8,7 @@ import libraryInterfaces.RotationInterface;
 public class rotateImp implements SingleValueDiscreteEffect{
     private int value;
     public Pixel[][] apply(Pixel[][] image, String fileName, LoggingService loggingService){
+        loggingService.addLog(fileName,"Rotation","Rotation degree: "+value);
         return RotationInterface.applyRotation(image,value);
     }
     public void setParameterValue(int parameterValue) throws IllegalParameterException{

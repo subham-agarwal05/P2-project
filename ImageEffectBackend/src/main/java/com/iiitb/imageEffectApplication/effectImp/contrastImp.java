@@ -8,6 +8,7 @@ import libraryInterfaces.Pixel;
 public class contrastImp implements SingleValueParameterizableEffect{
     private float value=0;
     public Pixel[][] apply(Pixel[][] image, String fileName, LoggingService loggingService){
+        loggingService.addLog(fileName,"Contrast","Contrast: "+value);
         return ContrastInterface.applyContrast(image,value);
     }
     public void setParameterValue(float parameterValue) throws IllegalParameterException{

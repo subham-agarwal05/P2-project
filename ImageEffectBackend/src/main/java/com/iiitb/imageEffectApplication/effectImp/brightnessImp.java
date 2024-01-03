@@ -8,6 +8,7 @@ import libraryInterfaces.Pixel;
 public class brightnessImp implements SingleValueParameterizableEffect{
     private float value=0;
     public Pixel[][] apply(Pixel[][] image, String fileName, LoggingService loggingService){
+        loggingService.addLog(fileName,"Brightness", "Brightness: "+value);
         return BrightnessInterface.applyBrightness(image,value);
 
     }
